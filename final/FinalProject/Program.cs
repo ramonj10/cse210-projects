@@ -39,7 +39,7 @@ class Program
             if (line.Contains("Chapter")){
                 int position = line.IndexOf("Chapter");
                 title = line.Substring(0,position-1);
-                Console.WriteLine($"Ha llegado hasta aquí {position} y final {line.Length-1}");
+                // Console.WriteLine($"Ha llegado hasta aquí {position} y final {line.Length-1}");
                 string chapterText = line.Substring(line.Length-(position+8));
                 int.TryParse(chapterText, out chapter);
                 
@@ -47,21 +47,24 @@ class Program
                 oBook.AddNewBook(title, lineNumber, standardBook, oBooksList);    
                 oChapter.AddNewChapter(title, chapter, lineNumber, standardBook, oChaptersList);
             }
+            /*
             // SIN TERMINAR
             if (Regex.IsMatch(line[0], "^(1|2|3|4|5|6|7|8|9)")){
                 int position = line.IndexOf(" ");
                 int verse = ParseInt(line[0,position-1]);
-                Verses oVerse = new Verses(title, chapter, verse, standardBooks)
+                Verses oVerse = new Verses(title, chapter, verse, standardBooks);
             }
             // SIN TERMINAR
             Console.Write("The Standard Books are:");
             oStandardBook.DisplayListElements(oStandardBooksList);
-
+            */
+            /*
             Console.Write("The Books are:");
             oBook.DisplayListElements(oBooksList); 
         
             Console.Write("The Chapters are:");
             oChapter.DisplayListElements(oChaptersList); 
+            */
         }
         
         // Upload the Menus
@@ -73,8 +76,8 @@ class Program
 
             string menuId = part[0];
             string menuName = part[1];
-            string idOption = part [2];
-            string Option = part [3];
+            string idOption = part[2];
+            string Option = part[3];
             Menus Menu = new Menus(menuId, menuName, idOption, Option);
             menusList.Add(Menu);
         }
@@ -87,7 +90,6 @@ class Program
         List<Menus> menuList5 = new List<Menus>();
         List<Menus> menuList6 = new List<Menus>();
         List<Menus> menuList1_1 = new List<Menus>();
-
         List<Menus> menuList1_2 = new List<Menus>();
         List<Menus> menuList1_3 = new List<Menus>();
         List<Menus> menuList1_4 = new List<Menus>();
@@ -104,11 +106,16 @@ class Program
         List<Menus> menuList3_3 = new List<Menus>();
         List<Menus> menuList3_4 = new List<Menus>();
         List<Menus> menuList3_5 = new List<Menus>();
-        List<Menus> menuList3_6 = new List<Menus>();
-        
-        
+        List<Menus> menuList3_6 = new List<Menus>(); 
         List<Menus> menuList1_1_1 = new List<Menus>();
-        
+        List<Menus> menuList2_1_1 = new List<Menus>();
+        List<Menus> menuList3_1_1 = new List<Menus>();
+        List<Menus> menuList4_1_1 = new List<Menus>();
+        List<Menus> menuList5_1_1 = new List<Menus>();
+        List<Menus> menuList6_1_1 = new List<Menus>();
+
+
+
         //menusList[0].AnaliceMenuOptions();
         for (int i=0; i<menusList.Count ; i++) {
             Console.WriteLine($"El MenuId es: {menusList[i].MenuId} para {menusList[i].GetMenuName}");
@@ -135,6 +142,9 @@ class Program
                 }
                 if (menusList[i].MenuId == "1_1"){
                     menuList1_1.Add(menusList[i]);
+                }
+                if (menusList[i].MenuId == "2_1"){
+                    menuList2_1.Add(menusList[i]);
                 }
                 if (menusList[i].MenuId == "1_1_1"){
                     menuList1_1_1.Add(menusList[i]);
@@ -235,14 +245,98 @@ class Program
                         }
                     }
                 }
+                
                 else if (choice == "2"){
                     menuList2[0].DisplayMenu(menuList2);
+                    bool replay2 = true;
+                    while (replay2 == true){
+                        menuList2[0].DisplayMenu(menuList2);
+                        Console.Write("Choose an choice from the Menu: ");
+                        string? choice2 = Console.ReadLine();
+                        while (choice2 != "0"){
+                            if (choice2 == "1"){
+                            
+                                bool replayMenu2_1 = true;
+                                while (replayMenu2_1 == true){
+                                    menuList2_1[0].DisplayMenu(menuList2_1);
+                                    Console.Write("Choose an choice from the Menu: ");
+                                    string? choice2_1 = Console.ReadLine();
+                                    while (choice2_1 != "0"){
+                                        if (choice2_1 == "1"){
+                                        
+                                            bool replayMenu2_1_1 = true;
+                                            while (replayMenu2_1_1 == true){
+                                                menuList2_1_1[0].DisplayMenu(menuList2_1_1);
+                                                Console.Write("Choose an choice from the Menu: ");
+                                                string? choice2_1_1 = Console.ReadLine();
+                                                while (choice2_1_1 != "0"){
+                                                    if (choice2_1_1 == "1"){
+                                                    }
+                                                    else if (choice2_1_1 == "2"){
+                                                        menuList2[0].DisplayMenu(menuList2);
+                                                    }
+                                                    else if (choice2_1_1 == "3"){
+                                                        menuList3[0].DisplayMenu(menuList3);
+                                                    }
+                                                    else{
+                                                        Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                                        menuList2_1_1[0].DisplayMenu(menuList2_1_1);
+                                                        Console.Write("Choose an choice from the Menu: ");
+                                                        choice2_1_1 = Console.ReadLine();
+                                                    }
+                                                }    
+                                                if (choice2_1_1 == "0"){
+                                                    replayMenu2_1_1 = false;
+                                                    choice2_1 = "";
+                                                }
+                                                
+                                            }
+                                        }
+                                        else if (choice2_1 == "2"){
+                                            menuList2[0].DisplayMenu(menuList2);
+                                        }
+                                        else if (choice2_1 == "3"){
+                                            menuList3[0].DisplayMenu(menuList3);
+                                        }
+                                        else{
+                                            Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                            menuList2_1[0].DisplayMenu(menuList2_1);
+                                            Console.Write("Choose an choice from the Menu: ");
+                                            choice2_1 = Console.ReadLine();
+                                        }
+                                    }
+                                    if (choice2_1 == "0"){
+                                        replayMenu2_1 = false;
+                                        choice2 = "";
+                                    }
+                                }
+                            }
+                            else if (choice2 == "2"){
+                                menuList2[0].DisplayMenu(menuList2);
+                            }
+                            else if (choice2 == "3"){
+                                menuList3[0].DisplayMenu(menuList3);
+                            }
+                            else{
+                                Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                menuList1[0].DisplayMenu(menuList1);
+                                Console.Write("Choose an choice from the Menu: ");
+                                choice2 = Console.ReadLine();
+                            }
+                        }
+                        if (choice2 == "0"){
+                            replay2 = false;
+                            choice = "";
+                        }
+                    }
                 }
+                
                 else if (choice == "3"){
                     menuList3[0].DisplayMenu(menuList3);
                     Console.Write("Choose an choice from the Menu: ");
                     string? choice3 = Console.ReadLine(); 
                 }
+                
                 else{
                     Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
                     menuList0[0].DisplayMenu(menuList0);
