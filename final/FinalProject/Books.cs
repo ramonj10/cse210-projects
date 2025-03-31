@@ -1,5 +1,6 @@
 public class Books : StandardBooks{
     // Attributes
+    private string _bookFullName;
     private string _book;
     private string? _abbreviation;
     private People? _author;
@@ -9,7 +10,11 @@ public class Books : StandardBooks{
     public Books(string standardBook) : base(standardBook){
         _book = "Unknown";
     }
-    public Books (string book, string standardBook) : base(standardBook){
+    public Books (string bookFullName, string standardBook) : base(standardBook){
+        _bookFullName = bookFullName;
+    }
+    public Books (string bookFullName, string book, string standardBook) : base(standardBook){
+        _bookFullName = bookFullName;
         _book = book;
     }
     public Books (string book, int startLine, string standardBook) : base(standardBook){
@@ -17,7 +22,8 @@ public class Books : StandardBooks{
         _startLine = startLine;
     }
 
-    public Books (string book, string abbreviation, string standardBok) : base(standardBok){
+    public Books (string bookFullName, string book, string abbreviation, string standardBok) : base(standardBok){
+        _bookFullName = bookFullName;
         _book = book;
         _abbreviation = abbreviation;
     }
@@ -39,6 +45,9 @@ public class Books : StandardBooks{
     public People GetAuthor(){
         return _author;
     }
+    public void SetBook(string book){
+        _book = book;
+    }
     public void SetAbbreviation(string abbreviation){
         _abbreviation = abbreviation;
     }
@@ -49,7 +58,7 @@ public class Books : StandardBooks{
     // Display books attributes
     public override void Display()
     {
-        Console.Write($"{_book} {_abbreviation} written by {_author} it belongs to the book of ");
+        Console.Write($"{_bookFullName} {_book} {_abbreviation} written by {_author} it belongs to the book of ");
         base.Display();
     }
 

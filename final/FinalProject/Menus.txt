@@ -1,73 +1,93 @@
-0,Main Menu,1,Add
-0,Main Menu,2,Modify
-0,Main Menu,3,Display
-0,Main Menu,4,Scriptures
-0,Main Menu,5,Personage
-0,Main Menu,6,Places
-0,Main Menu,7,Option 7
-0,Main Menu,8,Option 8
+0,Main Menu,1,People
+0,Main Menu,2,Places
+0,Main Menu,3,Books
+0,Main Menu,4,Chapters
+0,Main Menu,5,Verses
+0,Main Menu,6,Quotes
+0,Main Menu,7,Narrations
+0,Main Menu,8,Imagination
 0,Main Menu,9,Option 9
 0,Main Menu,0,Exit the program
-1,Add,1,Add People
-1,Add,2,Add Places
-1,Add,3,Option 3
-1,Add,4,Option 4
-1,Add,5,Option 5
-1,Add,6,Option 6
-1,Add,7,Option 7
-1,Add,8,Option 8
-1,Add,9,Option 9
-1,Add,0,Back to the previous Menu
-2,Modify,1,Modify People
-2,Modify,2,Modify Places
-2,Modify,3,Option 3
-2,Modify,4,Option 4
-2,Modify,5,Option 5
-2,Modify,6,Option 6
-2,Modify,7,Option 7
-2,Modify,8,Option 8
-2,Modify,9,Option 9
-2,Modify,0,Back to the previous Menu
-3,Display,1,Display People
-3,Display,2,Display Places
-3,Display,3,Option 3
-3,Display,4,Option 4
-3,Display,5,Option 5
-3,Display,6,Option 6
-3,Display,7,Option 7
-3,Display,8,Option 8
-3,Display,9,Option 9
-3,Display,0,Back to the previous Menu
-4,Display,1,Select Book
-4,Display,2,Select Chapter
-4,Display,3,Select Verse
-4,Display,4,Option 4
-4,Display,5,Option 5
-4,Display,6,Option 6
-4,Display,7,Option 7
-4,Display,8,Option 8
-4,Display,9,Option 9
-4,Display,0,Back to the previous Menu
-5,Personage,1,Biography
-5,Personage,2,Narration
-5,Personage,3,Imaginative view
-5,Personage,4,Option 4
-5,Personage,5,Option 5
-5,Personage,6,Option 6
-5,Personage,7,Option 7
-5,Personage,8,Option 8
-5,Personage,9,Option 9
-5,Personage,0,Back to the previous Menu
-6,Places,1,Information
-6,Places,2,Option 2
-6,Places,3,Option 3
-6,Places,4,Option 4
-6,Places,5,Option 5
-6,Places,6,Option 6
-6,Places,7,Option 7
-6,Places,8,Option 8
-6,Places,9,Option 9
-6,Places,0,Back to the previous Menu
+1,People,1,Add People
+1,People,2,Modify People
+1,People,3,View People
+1,People,4,Delete People
+1,People,5,List of people
+1,People,6,Genealogy of
+1,People,7,Option 7
+1,People,8,Option 8
+1,People,9,Option 9
+1,People,0,Back to the previous Menu
+2,Places,1,Add Places
+2,Places,2,Modify Places
+2,Places,3,View Places
+2,Places,4,Delete Places
+2,Places,5,List of Places
+2,Places,6,History of Pleaces
+2,Places,7,Option 7
+2,Places,8,Option 8
+2,Places,9,Option 9
+2,Places,0,Back to the previous Menu
+3,Books,1,Add Books
+3,Books,2,Modify Books
+3,Books,3,View Books
+3,Books,4,Delete Books
+3,Books,5,List of Books
+3,Books,6,Option 6
+3,Books,7,Option 7
+3,Books,8,Option 8
+3,Books,9,Option 9
+3,Books,0,Back to the previous Menu
+4,Chapters,1,Add Chapters
+4,Chapters,2,Modify Chapters
+4,Chapters,3,View Chapters
+4,Chapters,4,Delete Chapters
+4,Chapters,5,List of Chapters
+4,Chapters,6,Introductions to Chapters
+4,Chapters,7,Option 7
+4,Chapters,8,Option 8
+4,Chapters,9,Option 9
+4,Chapters,0,Back to the previous Menu
+5,Verses,1,Add Verses
+5,Verses,2,Modify Verses
+5,Verses,3,View Verses
+5,Verses,4,Delete Verses
+5,Verses,5,List of Verses
+5,Verses,6,Verses with Quotes
+5,Verses,7,Verses without Quotes
+5,Verses,8,Option 8
+5,Verses,9,Option 9
+5,Verses,0,Back to the previous Menu
+6,Quotes,1,Add Quotes
+6,Quotes,2,Modify Quotes
+6,Quotes,3,View Quotes
+6,Quotes,4,Delete Quotes
+6,Quotes,5,List of Quotes
+6,Quotes,6,Option 6
+6,Quotes,7,Option 7
+6,Quotes,8,Option 8
+6,Quotes,9,Option 9
+6,Quotes,0,Back to the previous Menu
+7,Narrations,1,Add Narrations
+7,Narrations,2,Modify Narrations
+7,Narrations,3,View Narrations
+7,Narrations,4,Delete Narrations
+7,Narrations,5,List of Narrations
+7,Narrations,6,Option 6
+7,Narrations,7,Option 7
+7,Narrations,8,Option 8
+7,Narrations,9,Option 9
+7,Narrations,0,Back to the previous Menu
+8,Imagination,1,Add Imagination
+8,Imagination,2,Modify Imagination
+8,Imagination,3,View Imagination
+8,QuoImaginationtes,4,Delete Imagination
+8,Imagination,5,List of Imagination
+8,Imagination,6,Option 6
+8,Imagination,7,Option 7
+8,Imagination,8,Option 8
+8,Imagination,9,Option 9
+8,Imagination,0,Back to the previous Menu
 1_1,Menu1_1,1,Option 1
 1_1,Menu1_1,2,Option 2
 1_1,Menu1_1,3,Option 3
