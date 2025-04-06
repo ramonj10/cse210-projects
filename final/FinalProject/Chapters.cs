@@ -5,6 +5,7 @@ public class Chapters : Books{
     private int _chapter;
     private int? _lineNumber;
 
+
     // Constructors
     public Chapters(string book, string standardBook) : base(book, standardBook){
         _chapter = 0;

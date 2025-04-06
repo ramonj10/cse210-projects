@@ -34,7 +34,7 @@ class Menus{
     }
 
     public void DisplayMenu(List<Menus> menusList){
-            Console.WriteLine($"- - - - - {menusList[0]._menuName.ToUpper()} - - - - -");
+            Console.WriteLine($"\n- - - - - {menusList[0]._menuName.ToUpper()} - - - - -");
             foreach (Menus opctions in menusList){
                 Console.WriteLine($"   {opctions._idOption} )\t{opctions._option}");
             }

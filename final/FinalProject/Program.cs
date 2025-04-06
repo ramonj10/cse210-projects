@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 class Program
 {
@@ -22,21 +23,31 @@ class Program
         
         // Declare variables
         int lineNumber = 0;
-        string title;
-        int chapter;
-        int verse;
+        string title = "";
+        int chapter= 0;
+        int verse = 0;
+        DateTime startDate = new DateTime();
+        DateTime endDate = new DateTime();
 
         // Declare objects
         StandardBooks oStandardBook =  new StandardBooks(standardBook);
         Books oBook = new Books(standardBook);
-        Chapters oChapter = new Chapters("Unknown", standardBook);
-        
+        Chapters oChapter = new Chapters(title, chapter, lineNumber, standardBook);
+        Verses oVerse = new Verses(title, chapter, verse, lineNumber, standardBook);
+        People father = new People("Unkown");
+        People oPeople = new People("", father);
+        People person = new People("", father);
+        People oPeopleFound = new People("", father);
+        People unkownFather = new People("Unkown", father);
 
         oStandardBook.AddNewStandardBook(standardBook, oStandardBooksList);
 
         foreach (string line in bookLines){
             lineNumber += 1;
-            if (line.Contains("Chapter")){
+            if (line.Length == 0){   // If the line is empty do nothing with it and go to next line
+
+            }
+            else if (line.Contains("Chapter")){
                 int position = line.IndexOf("Chapter");
                 title = line.Substring(0,position-1);
                 // Console.WriteLine($"Ha llegado hasta aquí {position} y final {line.Length-1}");
@@ -47,25 +58,38 @@ class Program
                 oBook.AddNewBook(title, lineNumber, standardBook, oBooksList);    
                 oChapter.AddNewChapter(title, chapter, lineNumber, standardBook, oChaptersList);
             }
-            /*
+            
             // SIN TERMINAR
-            if (Regex.IsMatch(line[0], "^(1|2|3|4|5|6|7|8|9)")){
-                int position = line.IndexOf(" ");
-                int verse = ParseInt(line[0,position-1]);
-                Verses oVerse = new Verses(title, chapter, verse, standardBooks);
+            else if (Regex.IsMatch(line[0].ToString(), @"[\d]")){
+                int initialPosition = line.IndexOf(":");
+                int finalPosition = line.IndexOf(" ", initialPosition);
+                int verseNumber = int.Parse(line.Substring(initialPosition+1, finalPosition-1-initialPosition));
+                oVerse = new Verses(title, chapter, verseNumber, lineNumber, standardBook);
             }
+
             // SIN TERMINAR
+            /*
             Console.Write("The Standard Books are:");
             oStandardBook.DisplayListElements(oStandardBooksList);
-            */
-            /*
+            
+            
             Console.Write("The Books are:");
             oBook.DisplayListElements(oBooksList); 
         
             Console.Write("The Chapters are:");
             oChapter.DisplayListElements(oChaptersList); 
+            
+            Console.Write("The Verses are:");
+            oVerse.DisplayListElements(oVersesList);
             */
         }
+
+        
+        Console.WriteLine($"It has Upload {oStandardBooksList.Count} Standard Books");
+        Console.WriteLine($"It has Upload {oBooksList.Count} Books");
+        Console.WriteLine($"It has Upload {oChaptersList.Count} Chapters");
+        Console.WriteLine($"It has Upload {oVersesList.Count} Verses");
+        */
         
         // Upload the Menus
         List<Menus> menusList = new List<Menus>();
@@ -162,10 +186,7 @@ class Program
         List<Menus> menuList7_1_1 = new List<Menus>();
         List<Menus> menuList8_1_1 = new List<Menus>();
 
-
-        //menusList[0].AnaliceMenuOptions();
         for (int i=0; i<menusList.Count ; i++) {
-            Console.WriteLine($"El MenuId es: {menusList[i].MenuId} para {menusList[i].GetMenuName}");
                 if (menusList[i].MenuId == "0"){
                     menuList0.Add(menusList[i]);
                 }
@@ -285,14 +306,12 @@ class Program
                 }
         }
         
-        // menusList[0].AnaliceMenuOptions();
-        
         // Display the recurrent Main Menu
         bool replay0 =true;
         while (replay0 == true){
             
             menuList0[0].DisplayMenu(menuList0);           
-            Console.Write("Choose an choice from the Menu: ");
+            Console.Write("Choose an option from the Menu: ");
             string? choice = Console.ReadLine(); 
             while (choice != "0"){
                 if (choice == "1"){
@@ -300,78 +319,141 @@ class Program
                     bool replay1 = true;
                     while (replay1 == true){
                         menuList1[0].DisplayMenu(menuList1);
-                        Console.Write("Choose an choice from the Menu: ");
+                        Console.Write("Choose an option from the Menu: ");
                         string? choice1 = Console.ReadLine();
                         while (choice1 != "0"){
                             if (choice1 == "1"){
+                                oPeople.InputNewPeople(oPeopleList);
+                                //choice1 = "";
+                            }
                             
-                                bool replayMenu1_1 = true;
-                                while (replayMenu1_1 == true){
-                                    menuList1_1[0].DisplayMenu(menuList1_1);
-                                    Console.Write("Choose an choice from the Menu: ");
-                                    string? choice1_1 = Console.ReadLine();
-                                    while (choice1_1 != "0"){
-                                        if (choice1_1 == "1"){
-                                        
-                                            bool replayMenu1_1_1 = true;
-                                            while (replayMenu1_1_1 == true){
-                                                menuList1_1_1[0].DisplayMenu(menuList1_1_1);
-                                                Console.Write("Choose an choice from the Menu: ");
-                                                string? choice1_1_1 = Console.ReadLine();
-                                                while (choice1_1_1 != "0"){
-                                                    if (choice1_1_1 == "1"){
+                            else if (choice1 == "2"){
+                                Console.WriteLine($"Which person do you want to modify?");
+                                string name = Console.ReadLine();
+                                if (oPeopleList.Any(a => a.GetName() == name)){
+                                    Console.WriteLine($"This is the actual information about this person: {name}.");
+                                    oPeopleFound = oPeople.FindPeopleObject(name, oPeopleList);
+                                    oPeopleFound.Display();
+                                    menuList1_2[0].DisplayMenu(menuList1_2);
+                                    Console.Write("Choose an option from the Menu: ");
+                                    string? choice1_2 = Console.ReadLine();
+                                    
+                                    bool replay1_2 = true;
+                                    while (replay1_2 == true){
+                                        //menuList1_2[0].DisplayMenu(menuList1_2);
+                                        //Console.Write("Choose an option from the Menu: ");
+                                        //choice1_2 = Console.ReadLine();
+                                        while (choice1_2 != "0"){
+                                            if (choice1_2 == "1"){
+                                                Console.WriteLine($"Which new name you want for {oPeopleFound.GetName()}: ");
+                                                string newName = Console.ReadLine();
+                                                oPeopleFound.ModifyName(oPeopleFound.GetName(), newName, oPeopleList);
+
+                                                menuList1_2[0].DisplayMenu(menuList1_2);
+                                                Console.Write("Choose an option from the Menu: ");
+                                                choice1_2 = Console.ReadLine();
+                                                /*
+                                                bool replayMenu1_1_1 = true;
+                                                while (replayMenu1_1_1 == true){
+                                                    menuList1_1_1[0].DisplayMenu(menuList1_1_1);
+                                                    Console.Write("Choose an option from the Menu: ");
+                                                    string? choice1_1_1 = Console.ReadLine();
+                                                    while (choice1_1_1 != "0"){
+                                                        if (choice1_1_1 == "1"){
+                                                        }
+                                                        else if (choice1_1_1 == "2"){
+                                                            menuList2[0].DisplayMenu(menuList2);
+                                                        }
+                                                        else if (choice1_1_1 == "3"){
+                                                            menuList3[0].DisplayMenu(menuList3);
+                                                        }
+                                                        else{
+                                                            Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
+                                                            menuList1_1_1[0].DisplayMenu(menuList1_1_1);
+                                                            Console.Write("Choose an option from the Menu: ");
+                                                            choice1_1_1 = Console.ReadLine();
+                                                        }
+                                                    }    
+                                                    if (choice1_1_1 == "0"){
+                                                        replayMenu1_1_1 = false;
+                                                        choice1_1 = "";
                                                     }
-                                                    else if (choice1_1_1 == "2"){
-                                                        menuList2[0].DisplayMenu(menuList2);
-                                                    }
-                                                    else if (choice1_1_1 == "3"){
-                                                        menuList3[0].DisplayMenu(menuList3);
-                                                    }
-                                                    else{
-                                                        Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
-                                                        menuList1_1_1[0].DisplayMenu(menuList1_1_1);
-                                                        Console.Write("Choose an choice from the Menu: ");
-                                                        choice1_1_1 = Console.ReadLine();
-                                                    }
-                                                }    
-                                                if (choice1_1_1 == "0"){
-                                                    replayMenu1_1_1 = false;
-                                                    choice1_1 = "";
-                                                }
-                                                
+                                                    
+                                                }*/
+                                            }
+                                            else if (choice1_2 == "2"){
+                                                oPeopleFound.Display();
+                                                People oFather = oPeopleFound.GetFather(); 
+                                                Console.WriteLine($"His actual father is {oFather.GetName()} and it will change to: ");
+                                                string newFather = Console.ReadLine();
+                                                People oNewFather = oFather.FindPeopleObject(newFather,oPeopleList);
+                                                oPeopleFound.ModifyFather(oFather.GetName(), oNewFather, oPeopleList);
+
+                                                menuList1_2[0].DisplayMenu(menuList1_2);
+                                                Console.Write("Choose an option from the Menu: ");
+                                                choice1_2 = Console.ReadLine();
+                                            }
+                                            else if (choice1_2 == "3"){
+                                                menuList3[0].DisplayMenu(menuList3);
+                                            }
+                                            else{
+                                                Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
+                                                menuList1_2[0].DisplayMenu(menuList1_2);
+                                                Console.Write("Choose an option from the Menu: ");
+                                                choice1_2 = Console.ReadLine();
                                             }
                                         }
-                                        else if (choice1_1 == "2"){
-                                            menuList2[0].DisplayMenu(menuList2);
+                                        if (choice1_2 == "0"){
+                                            replay1_2 = false;
+                                            choice1 = "";
                                         }
-                                        else if (choice1_1 == "3"){
-                                            menuList3[0].DisplayMenu(menuList3);
-                                        }
-                                        else{
-                                            Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
-                                            menuList1_1[0].DisplayMenu(menuList1_1);
-                                            Console.Write("Choose an choice from the Menu: ");
-                                            choice1_1 = Console.ReadLine();
-                                        }
-                                    }
-                                    if (choice1_1 == "0"){
-                                        replayMenu1_1 = false;
-                                        choice1 = "";
+                                        //menuList1[0].DisplayMenu(menuList1);
+                                        //Console.Write("Choose an option from the Menu: ");
+                                        //choice1 = Console.ReadLine();
                                     }
                                 }
+                                else{
+                                    Console.WriteLine($"The {name} doesn´t exist");
+                                }
                             }
-                            else if (choice1 == "2"){
-                                menuList2[0].DisplayMenu(menuList2);
-                            }
+                            
                             else if (choice1 == "3"){
-                                menuList3[0].DisplayMenu(menuList3);
+                                oPeople.DisplayListElements(oPeopleList);
+                                //choice = "";
+                                //menuList1[0].DisplayMenu(menuList1);
+                                //Console.Write("Choose an option from the Menu: ");
+                                //choice1 = Console.ReadLine();
                             }
+                            
+                            else if (choice1 == "4"){
+                                Console.WriteLine($"Which person do you want to delete?");
+                                string name = Console.ReadLine();
+                                oPeople.DeletePerson(name, oPeopleList);
+                                choice = "";
+                            }
+
+                            else if (choice1 == "5"){
+                                oPeople.ListElements(oPeopleList);
+            
+                                choice = "";
+                            }
+
+                            else if (choice1 == "6"){
+                                Console.WriteLine("Sorry, this option is under development.");
+
+                                choice = "";
+                            }
+                            
                             else{
-                                Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
-                                menuList1[0].DisplayMenu(menuList1);
-                                Console.Write("Choose an choice from the Menu: ");
-                                choice1 = Console.ReadLine();
+                                Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
+                                //choice = "";
+                                //menuList1[0].DisplayMenu(menuList1);
+                                //Console.Write("Choose an option from the Menu: ");
+                                //choice1 = Console.ReadLine();
                             }
+                            menuList1[0].DisplayMenu(menuList1);
+                            Console.Write("Choose an option from the Menu: ");
+                            choice1 = Console.ReadLine();
                         }
                         if (choice1 == "0"){
                             replay1 = false;
@@ -385,15 +467,15 @@ class Program
                     bool replay2 = true;
                     while (replay2 == true){
                         menuList2[0].DisplayMenu(menuList2);
-                        Console.Write("Choose an choice from the Menu: ");
+                        Console.Write("Choose an option from the Menu: ");
                         string? choice2 = Console.ReadLine();
                         while (choice2 != "0"){
                             if (choice2 == "1"){
-                            
-                                bool replayMenu2_1 = true;
+                                oPeople.InputNewPeople(oPeopleList);
+                                /*bool replayMenu2_1 = true;
                                 while (replayMenu2_1 == true){
                                     menuList2_1[0].DisplayMenu(menuList2_1);
-                                    Console.Write("Choose an choice from the Menu: ");
+                                    Console.Write("Choose an option from the Menu: ");
                                     string? choice2_1 = Console.ReadLine();
                                     while (choice2_1 != "0"){
                                         if (choice2_1 == "1"){
@@ -401,7 +483,7 @@ class Program
                                             bool replayMenu2_1_1 = true;
                                             while (replayMenu2_1_1 == true){
                                                 menuList2_1_1[0].DisplayMenu(menuList2_1_1);
-                                                Console.Write("Choose an choice from the Menu: ");
+                                                Console.Write("Choose an option from the Menu: ");
                                                 string? choice2_1_1 = Console.ReadLine();
                                                 while (choice2_1_1 != "0"){
                                                     if (choice2_1_1 == "1"){
@@ -413,9 +495,9 @@ class Program
                                                         menuList3[0].DisplayMenu(menuList3);
                                                     }
                                                     else{
-                                                        Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                                        Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                                         menuList2_1_1[0].DisplayMenu(menuList2_1_1);
-                                                        Console.Write("Choose an choice from the Menu: ");
+                                                        Console.Write("Choose an option from the Menu: ");
                                                         choice2_1_1 = Console.ReadLine();
                                                     }
                                                 }    
@@ -433,9 +515,9 @@ class Program
                                             menuList3[0].DisplayMenu(menuList3);
                                         }
                                         else{
-                                            Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                            Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                             menuList2_1[0].DisplayMenu(menuList2_1);
-                                            Console.Write("Choose an choice from the Menu: ");
+                                            Console.Write("Choose an option from the Menu: ");
                                             choice2_1 = Console.ReadLine();
                                         }
                                     }
@@ -443,7 +525,7 @@ class Program
                                         replayMenu2_1 = false;
                                         choice2 = "";
                                     }
-                                }
+                                }*/
                             }
                             else if (choice2 == "2"){
                                 menuList2[0].DisplayMenu(menuList2);
@@ -452,9 +534,9 @@ class Program
                                 menuList3[0].DisplayMenu(menuList3);
                             }
                             else{
-                                Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                 menuList1[0].DisplayMenu(menuList1);
-                                Console.Write("Choose an choice from the Menu: ");
+                                Console.Write("Choose an option from the Menu: ");
                                 choice2 = Console.ReadLine();
                             }
                         }
@@ -470,7 +552,7 @@ class Program
                     bool replay3 = true;
                     while (replay3 == true){
                         menuList3[0].DisplayMenu(menuList3);
-                        Console.Write("Choose an choice from the Menu: ");
+                        Console.Write("Choose an option from the Menu: ");
                         string? choice3 = Console.ReadLine();
                         while (choice3 != "0"){
                             if (choice3 == "1"){
@@ -478,7 +560,7 @@ class Program
                                 bool replayMenu3_1 = true;
                                 while (replayMenu3_1 == true){
                                     menuList3_1[0].DisplayMenu(menuList3_1);
-                                    Console.Write("Choose an choice from the Menu: ");
+                                    Console.Write("Choose an option from the Menu: ");
                                     string? choice3_1 = Console.ReadLine();
                                     while (choice3_1 != "0"){
                                         if (choice3_1 == "1"){
@@ -486,7 +568,7 @@ class Program
                                             bool replayMenu3_1_1 = true;
                                             while (replayMenu3_1_1 == true){
                                                 menuList3_1_1[0].DisplayMenu(menuList3_1_1);
-                                                Console.Write("Choose an choice from the Menu: ");
+                                                Console.Write("Choose an option from the Menu: ");
                                                 string? choice3_1_1 = Console.ReadLine();
                                                 while (choice3_1_1 != "0"){
                                                     if (choice3_1_1 == "1"){
@@ -498,9 +580,9 @@ class Program
                                                         menuList3[0].DisplayMenu(menuList3);
                                                     }
                                                     else{
-                                                        Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                                        Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                                         menuList3_1_1[0].DisplayMenu(menuList3_1_1);
-                                                        Console.Write("Choose an choice from the Menu: ");
+                                                        Console.Write("Choose an option from the Menu: ");
                                                         choice3_1_1 = Console.ReadLine();
                                                     }
                                                 }    
@@ -518,9 +600,9 @@ class Program
                                             menuList3[0].DisplayMenu(menuList3);
                                         }
                                         else{
-                                            Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                            Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                             menuList3_1[0].DisplayMenu(menuList3_1);
-                                            Console.Write("Choose an choice from the Menu: ");
+                                            Console.Write("Choose an option from the Menu: ");
                                             choice3_1 = Console.ReadLine();
                                         }
                                     }
@@ -537,9 +619,9 @@ class Program
                                 menuList3[0].DisplayMenu(menuList3);
                             }
                             else{
-                                Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                 menuList1[0].DisplayMenu(menuList1);
-                                Console.Write("Choose an choice from the Menu: ");
+                                Console.Write("Choose an option from the Menu: ");
                                 choice3 = Console.ReadLine();
                             }
                         }
@@ -555,7 +637,7 @@ class Program
                     bool replay4 = true;
                     while (replay4 == true){
                         menuList4[0].DisplayMenu(menuList4);
-                        Console.Write("Choose an choice from the Menu: ");
+                        Console.Write("Choose an option from the Menu: ");
                         string? choice4 = Console.ReadLine();
                         while (choice4 != "0"){
                             if (choice4 == "1"){
@@ -563,7 +645,7 @@ class Program
                                 bool replayMenu4_1 = true;
                                 while (replayMenu4_1 == true){
                                     menuList4_1[0].DisplayMenu(menuList4_1);
-                                    Console.Write("Choose an choice from the Menu: ");
+                                    Console.Write("Choose an option from the Menu: ");
                                     string? choice4_1 = Console.ReadLine();
                                     while (choice4_1 != "0"){
                                         if (choice4_1 == "1"){
@@ -571,7 +653,7 @@ class Program
                                             bool replayMenu4_1_1 = true;
                                             while (replayMenu4_1_1 == true){
                                                 menuList4_1_1[0].DisplayMenu(menuList4_1_1);
-                                                Console.Write("Choose an choice from the Menu: ");
+                                                Console.Write("Choose an option from the Menu: ");
                                                 string? choice4_1_1 = Console.ReadLine();
                                                 while (choice4_1_1 != "0"){
                                                     if (choice4_1_1 == "1"){
@@ -583,9 +665,9 @@ class Program
                                                         menuList3[0].DisplayMenu(menuList3);
                                                     }
                                                     else{
-                                                        Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                                        Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                                         menuList4_1_1[0].DisplayMenu(menuList4_1_1);
-                                                        Console.Write("Choose an choice from the Menu: ");
+                                                        Console.Write("Choose an option from the Menu: ");
                                                         choice4_1_1 = Console.ReadLine();
                                                     }
                                                 }    
@@ -603,9 +685,9 @@ class Program
                                             menuList3[0].DisplayMenu(menuList3);
                                         }
                                         else{
-                                            Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                            Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                             menuList4_1[0].DisplayMenu(menuList4_1);
-                                            Console.Write("Choose an choice from the Menu: ");
+                                            Console.Write("Choose an option from the Menu: ");
                                             choice4_1 = Console.ReadLine();
                                         }
                                     }
@@ -622,9 +704,9 @@ class Program
                                 menuList3[0].DisplayMenu(menuList3);
                             }
                             else{
-                                Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                 menuList1[0].DisplayMenu(menuList1);
-                                Console.Write("Choose an choice from the Menu: ");
+                                Console.Write("Choose an option from the Menu: ");
                                 choice4 = Console.ReadLine();
                             }
                         }
@@ -640,7 +722,7 @@ class Program
                     bool replay5 = true;
                     while (replay5 == true){
                         menuList5[0].DisplayMenu(menuList5);
-                        Console.Write("Choose an choice from the Menu: ");
+                        Console.Write("Choose an option from the Menu: ");
                         string? choice5 = Console.ReadLine();
                         while (choice5 != "0"){
                             if (choice5 == "1"){
@@ -648,7 +730,7 @@ class Program
                                 bool replayMenu5_1 = true;
                                 while (replayMenu5_1 == true){
                                     menuList5_1[0].DisplayMenu(menuList5_1);
-                                    Console.Write("Choose an choice from the Menu: ");
+                                    Console.Write("Choose an option from the Menu: ");
                                     string? choice5_1 = Console.ReadLine();
                                     while (choice5_1 != "0"){
                                         if (choice5_1 == "1"){
@@ -656,7 +738,7 @@ class Program
                                             bool replayMenu5_1_1 = true;
                                             while (replayMenu5_1_1 == true){
                                                 menuList5_1_1[0].DisplayMenu(menuList5_1_1);
-                                                Console.Write("Choose an choice from the Menu: ");
+                                                Console.Write("Choose an option from the Menu: ");
                                                 string? choice5_1_1 = Console.ReadLine();
                                                 while (choice5_1_1 != "0"){
                                                     if (choice5_1_1 == "1"){
@@ -668,9 +750,9 @@ class Program
                                                         menuList3[0].DisplayMenu(menuList3);
                                                     }
                                                     else{
-                                                        Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                                        Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                                         menuList5_1_1[0].DisplayMenu(menuList5_1_1);
-                                                        Console.Write("Choose an choice from the Menu: ");
+                                                        Console.Write("Choose an option from the Menu: ");
                                                         choice5_1_1 = Console.ReadLine();
                                                     }
                                                 }    
@@ -688,9 +770,9 @@ class Program
                                             menuList3[0].DisplayMenu(menuList3);
                                         }
                                         else{
-                                            Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                            Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                             menuList5_1[0].DisplayMenu(menuList5_1);
-                                            Console.Write("Choose an choice from the Menu: ");
+                                            Console.Write("Choose an option from the Menu: ");
                                             choice5_1 = Console.ReadLine();
                                         }
                                     }
@@ -707,9 +789,9 @@ class Program
                                 menuList3[0].DisplayMenu(menuList3);
                             }
                             else{
-                                Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                 menuList1[0].DisplayMenu(menuList1);
-                                Console.Write("Choose an choice from the Menu: ");
+                                Console.Write("Choose an option from the Menu: ");
                                 choice5 = Console.ReadLine();
                             }
                         }
@@ -725,7 +807,7 @@ class Program
                     bool replay6 = true;
                     while (replay6 == true){
                         menuList6[0].DisplayMenu(menuList6);
-                        Console.Write("Choose an choice from the Menu: ");
+                        Console.Write("Choose an option from the Menu: ");
                         string? choice6 = Console.ReadLine();
                         while (choice6 != "0"){
                             if (choice6 == "1"){
@@ -733,7 +815,7 @@ class Program
                                 bool replayMenu6_1 = true;
                                 while (replayMenu6_1 == true){
                                     menuList6_1[0].DisplayMenu(menuList6_1);
-                                    Console.Write("Choose an choice from the Menu: ");
+                                    Console.Write("Choose an option from the Menu: ");
                                     string? choice6_1 = Console.ReadLine();
                                     while (choice6_1 != "0"){
                                         if (choice6_1 == "1"){
@@ -741,7 +823,7 @@ class Program
                                             bool replayMenu6_1_1 = true;
                                             while (replayMenu6_1_1 == true){
                                                 menuList6_1_1[0].DisplayMenu(menuList6_1_1);
-                                                Console.Write("Choose an choice from the Menu: ");
+                                                Console.Write("Choose an option from the Menu: ");
                                                 string? choice6_1_1 = Console.ReadLine();
                                                 while (choice6_1_1 != "0"){
                                                     if (choice6_1_1 == "1"){
@@ -753,9 +835,9 @@ class Program
                                                         menuList3[0].DisplayMenu(menuList3);
                                                     }
                                                     else{
-                                                        Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                                        Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                                         menuList6_1_1[0].DisplayMenu(menuList6_1_1);
-                                                        Console.Write("Choose an choice from the Menu: ");
+                                                        Console.Write("Choose an option from the Menu: ");
                                                         choice6_1_1 = Console.ReadLine();
                                                     }
                                                 }    
@@ -773,9 +855,9 @@ class Program
                                             menuList3[0].DisplayMenu(menuList3);
                                         }
                                         else{
-                                            Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                            Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                             menuList6_1[0].DisplayMenu(menuList6_1);
-                                            Console.Write("Choose an choice from the Menu: ");
+                                            Console.Write("Choose an option from the Menu: ");
                                             choice6_1 = Console.ReadLine();
                                         }
                                     }
@@ -792,9 +874,9 @@ class Program
                                 menuList3[0].DisplayMenu(menuList3);
                             }
                             else{
-                                Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                 menuList1[0].DisplayMenu(menuList1);
-                                Console.Write("Choose an choice from the Menu: ");
+                                Console.Write("Choose an option from the Menu: ");
                                 choice6 = Console.ReadLine();
                             }
                         }
@@ -810,7 +892,7 @@ class Program
                     bool replay7 = true;
                     while (replay7 == true){
                         menuList7[0].DisplayMenu(menuList7);
-                        Console.Write("Choose an choice from the Menu: ");
+                        Console.Write("Choose an option from the Menu: ");
                         string? choice7 = Console.ReadLine();
                         while (choice7 != "0"){
                             if (choice7 == "1"){
@@ -818,7 +900,7 @@ class Program
                                 bool replayMenu2_1 = true;
                                 while (replayMenu2_1 == true){
                                     menuList7_1[0].DisplayMenu(menuList7_1);
-                                    Console.Write("Choose an choice from the Menu: ");
+                                    Console.Write("Choose an option from the Menu: ");
                                     string? choice7_1 = Console.ReadLine();
                                     while (choice7_1 != "0"){
                                         if (choice7_1 == "1"){
@@ -826,7 +908,7 @@ class Program
                                             bool replayMenu2_1_1 = true;
                                             while (replayMenu2_1_1 == true){
                                                 menuList7_1_1[0].DisplayMenu(menuList7_1_1);
-                                                Console.Write("Choose an choice from the Menu: ");
+                                                Console.Write("Choose an option from the Menu: ");
                                                 string? choice7_1_1 = Console.ReadLine();
                                                 while (choice7_1_1 != "0"){
                                                     if (choice7_1_1 == "1"){
@@ -838,9 +920,9 @@ class Program
                                                         menuList3[0].DisplayMenu(menuList3);
                                                     }
                                                     else{
-                                                        Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                                        Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                                         menuList7_1_1[0].DisplayMenu(menuList7_1_1);
-                                                        Console.Write("Choose an choice from the Menu: ");
+                                                        Console.Write("Choose an option from the Menu: ");
                                                         choice7_1_1 = Console.ReadLine();
                                                     }
                                                 }    
@@ -858,9 +940,9 @@ class Program
                                             menuList3[0].DisplayMenu(menuList3);
                                         }
                                         else{
-                                            Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                            Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                             menuList7_1[0].DisplayMenu(menuList7_1);
-                                            Console.Write("Choose an choice from the Menu: ");
+                                            Console.Write("Choose an option from the Menu: ");
                                             choice7_1 = Console.ReadLine();
                                         }
                                     }
@@ -877,9 +959,9 @@ class Program
                                 menuList3[0].DisplayMenu(menuList3);
                             }
                             else{
-                                Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                 menuList1[0].DisplayMenu(menuList1);
-                                Console.Write("Choose an choice from the Menu: ");
+                                Console.Write("Choose an option from the Menu: ");
                                 choice7 = Console.ReadLine();
                             }
                         }
@@ -895,7 +977,7 @@ class Program
                     bool replay8 = true;
                     while (replay8 == true){
                         menuList7[0].DisplayMenu(menuList7);
-                        Console.Write("Choose an choice from the Menu: ");
+                        Console.Write("Choose an option from the Menu: ");
                         string? choice8 = Console.ReadLine();
                         while (choice8 != "0"){
                             if (choice8 == "1"){
@@ -903,7 +985,7 @@ class Program
                                 bool replayMenu2_1 = true;
                                 while (replayMenu2_1 == true){
                                     menuList7_1[0].DisplayMenu(menuList7_1);
-                                    Console.Write("Choose an choice from the Menu: ");
+                                    Console.Write("Choose an option from the Menu: ");
                                     string? choice8_1 = Console.ReadLine();
                                     while (choice8_1 != "0"){
                                         if (choice8_1 == "1"){
@@ -911,7 +993,7 @@ class Program
                                             bool replayMenu2_1_1 = true;
                                             while (replayMenu2_1_1 == true){
                                                 menuList7_1_1[0].DisplayMenu(menuList7_1_1);
-                                                Console.Write("Choose an choice from the Menu: ");
+                                                Console.Write("Choose an option from the Menu: ");
                                                 string? choice8_1_1 = Console.ReadLine();
                                                 while (choice8_1_1 != "0"){
                                                     if (choice8_1_1 == "1"){
@@ -923,9 +1005,9 @@ class Program
                                                         menuList3[0].DisplayMenu(menuList3);
                                                     }
                                                     else{
-                                                        Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                                        Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                                         menuList7_1_1[0].DisplayMenu(menuList7_1_1);
-                                                        Console.Write("Choose an choice from the Menu: ");
+                                                        Console.Write("Choose an option from the Menu: ");
                                                         choice8_1_1 = Console.ReadLine();
                                                     }
                                                 }    
@@ -943,9 +1025,9 @@ class Program
                                             menuList3[0].DisplayMenu(menuList3);
                                         }
                                         else{
-                                            Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                            Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                             menuList7_1[0].DisplayMenu(menuList7_1);
-                                            Console.Write("Choose an choice from the Menu: ");
+                                            Console.Write("Choose an option from the Menu: ");
                                             choice8_1 = Console.ReadLine();
                                         }
                                     }
@@ -962,9 +1044,9 @@ class Program
                                 menuList3[0].DisplayMenu(menuList3);
                             }
                             else{
-                                Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                                Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                                 menuList1[0].DisplayMenu(menuList1);
-                                Console.Write("Choose an choice from the Menu: ");
+                                Console.Write("Choose an option from the Menu: ");
                                 choice8 = Console.ReadLine();
                             }
                         }
@@ -976,148 +1058,14 @@ class Program
                 } 
 
                 else{
-                    Console.WriteLine("Your choice is not valid.\nChoose an choice between 1 to 0.\n\n");
+                    Console.WriteLine("Your option is not valid.\nChoose an option between 1 to 0.\n\n");
                     menuList0[0].DisplayMenu(menuList0);
-                    Console.Write("Choose an choice from the Menu: ");
+                    Console.Write("Choose an option from the Menu: ");
                     choice = Console.ReadLine();
                 }
             }
             
             if (choice == "0"){
-                replay0 = false;
-            }
-        
-        
-            /*// choice Menu
-            Console.WriteLine("PROPER NAME MENU\n" + 
-                            "1. Add\n" +
-                            "2. Modify\n" +
-                            "3. Display\n" +
-                            "q. Quit the program\n");
-            Console.Write("Choose one of the menu choices and press enter: ");
-            string choice = Console.ReadLine()!;
-            */
-            
-            // Analice selected choice
-            if (choice == "1"){
-                //Create needed variables to collect input
-                DateTime startDate = new DateTime();
-                DateTime endDate = new DateTime();
-                People unkownFather = new People("Unkown");
-                People father = new People("");
-                string fatherInput;
-                List<People> children = new List<People>();
-
-                Console.Write("\n¿What name do you want to Add? ");
-                string name = Console.ReadLine()!;  // ! null-forgiveness operator
-                
-                Console.Write("\nInput the birthday (mm-dd-yyyy) and enter or just enter if you don´t know it. ");
-                string birthday = Console.ReadLine()!;  // ! null-forgiveness operator
-                
-                if (birthday.Length == 10){
-                    startDate = DateTime.Parse(birthday);
-                }
-                
-                Console.Write("\nInput the Death Date (mm-dd-yyyy) and enter or just enter if you don´t know it. ");
-                string deathDate = Console.ReadLine()!;  // ! null-forgiveness operator
-                
-                if (deathDate.Length == 10){
-                    endDate = DateTime.Parse(deathDate);
-                }
-
-                Console.Write("\nFather´s Name: ");
-                fatherInput = Console.ReadLine()!;
-                if (fatherInput.Length >= 2){
-                    father = new People(fatherInput);
-                    father.AddNewPeople(father, oPeopleList);
-                }
-                else{
-                    father = unkownFather;
-                }
-
-                string child ="";
-                while (child != "q"){
-                    Console.Write("\nChildren's name: (q to quit) ");
-                    child = Console.ReadLine()!;
-                    
-                    if (child == "q"){
-                        break;
-                    }
-                    else if (child.Length <= 2){
-                        Console.WriteLine($"Child length is {child.Length}");
-                        child = null;
-                    }
-                    else{
-                        People oPeopleChild = new People(child);
-                        Console.WriteLine($"Child name is {child}");
-                        oPeopleChild.AddNewPeople(oPeopleChild, oPeopleList);
-                        children.Add(oPeopleChild);
-                        oPeopleChild.Display();
-                        foreach (People element in children){
-                            Console.Write("Hijos: ");
-                            element.Display();
-                        }
-                        foreach (People element in oPeopleList){
-                            Console.Write("Personajes: ");
-                            element.Display();
-                        }
-                    }
-                }
-
-                //Determine the constuctor to be use    
-                
-                // Only with people name
-                if (startDate == DateTime.MinValue & endDate == DateTime.MinValue & father == unkownFather & children.Count == 0){   // DateTime.MinValue es que no hay fecah (El menor valor posible)
-                    People newName = new People(name);
-                    oPeopleList.Add(newName);
-                }
-
-                // Only with people name and children
-                if (startDate == DateTime.MinValue & endDate == DateTime.MinValue & father == unkownFather & children.Count != 0){   // DateTime.MinValue es que no hay fecah (El menor valor posible)
-                    People newName = new People(name, children);
-                    oPeopleList.Add(newName);
-                }
-
-                // With people and fathers name
-                else if (startDate == DateTime.MinValue & endDate == DateTime.MinValue & father != unkownFather & children.Count == 0){
-                    People newName = new People(name, father);
-                    oPeopleList.Add(newName);
-                }
-
-                // With people and fathers name and birthday
-                else if (startDate != DateTime.MinValue & endDate == DateTime.MinValue & father != unkownFather & children.Count == 0){
-                    People newName = new People(name, father, startDate);
-                    oPeopleList.Add(newName);
-                }
-
-                // With people name and birthday
-                else if ( endDate == DateTime.MinValue & startDate != DateTime.MinValue & father == unkownFather & children.Count == 0){
-                    People newName = new People(name, unkownFather, startDate);
-                    oPeopleList.Add(newName);
-                }
-                
-                // With People name, birth and death date
-                else if ( startDate != DateTime.MinValue & endDate != DateTime.MinValue & father == unkownFather & children.Count == 0){
-                    People newName = new People(name, unkownFather, startDate, endDate);
-                    oPeopleList.Add(newName);
-                }
-            }
-            
-            else if (choice == "2"){
-
-            }
-            
-            else if (choice == "3"){
-                Console.Write("\n¿Which name do you want to display? ");
-                string name = Console.ReadLine()!;  // ! null-forgiveness operator
-                foreach (People el in oPeopleList){
-                    if (el.GetName() == name){
-                        el.DisplayWithChildren();
-                    }
-                }
-            }
-
-            else if (choice == "0"){
                 replay0 = false;
             }
         }

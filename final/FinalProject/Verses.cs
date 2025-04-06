@@ -26,4 +26,13 @@ public class Verses : Chapters{
             verse.Display();
         }
     }
+
+    // Verify if the verse already exist in VerseList
+    public void AddNewVerse(string book, int chapter, int verse, int lineNumber, string standardBook, List<Verses> oVersesList){
+        bool exists = oVersesList.Any(a => a.GetVerse() == verse & a.GetChapter() == chapter & a.GetBook() == book);
+        if (exists == false){
+            Verses oVerse = new Verses(book, chapter, verse, lineNumber, standardBook);
+            oVersesList.Add(oVerse);
+        }    
+    }
 }

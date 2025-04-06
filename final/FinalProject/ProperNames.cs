@@ -40,6 +40,9 @@ public class ProperNames {
         return _endDate;
     }
 
+    public void SetName( string name){
+        _name = name;
+    }
     public void SetStartDate (DateTime startDate){
         _startDate = startDate;
     }
